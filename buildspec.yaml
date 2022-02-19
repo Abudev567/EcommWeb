@@ -6,21 +6,21 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 685696844866.dkr.ecr.ap-south-1.amazonaws.com
-      - REPOSITORY_URI=685696844866.dkr.ecr.ap-south-1.amazonaws.com/ecommrepo
+      - REPOSITORY_URI=685696844866.dkr.ecr.ap-south-1.amazonaws.com/ecommpro
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest .
+      - docker build -t 685696844866.dkr.ecr.ap-south-1.amazonaws.com:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - docker push  685696844866.dkr.ecr.ap-south-1.amazonaws.com:latest
+      - docker push  685696844866.dkr.ecr.ap-south-1.amazonaws.com:$IMAGE_TAG
       - echo Writing image definitions file...
       - printf '[{"name":"ecommrepo","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
