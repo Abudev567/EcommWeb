@@ -13,7 +13,8 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - service docker start 
+      - sudo chmod 777 /var/run/docker.sock
+      - sudo service docker start 
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag  $REPOSITORY_URI:latest
   post_build:
